@@ -1,8 +1,8 @@
-
 <!DOCTYPE html>
 <html>
+
 <head>
-<style>
+    <style>
         body {
             background-image: url('background.jpg');
             background-repeat: no-repeat;
@@ -52,6 +52,25 @@
             right: 10px;
         }
 
+        /* Additional styles for the table */
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
         @keyframes pulse {
             0% {
                 transform: scale(1);
@@ -82,18 +101,55 @@
             margin-bottom: 30px;
         }
     </style>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
 </head>
+
 <body>
     <div>
-    	
-    	<div>
-            <h3 class="display-4">Functionality yet to be added.</h3>
+
+        <div>
+            <h3 class="display-4">Members</h3>
+            <?php
+            $sName = "localhost";
+            $uName = "root";
+            $pass = "";
+            $db_name = "project";
+            $conn = new mysqli($sName, $uName, $pass, $db_name);
+            $alumniQuery = "SELECT name, email FROM alumni";
+            $alumniResult = $conn->query($alumniQuery);
+
+            // Query to retrieve data from students table
+            $studentsQuery = "SELECT name, email FROM students";
+            $studentsResult = $conn->query($studentsQuery);
+
+            // Combine results from both tables
+            $combinedResults = array_merge($alumniResult->fetch_all(MYSQLI_ASSOC), $studentsResult->fetch_all(MYSQLI_ASSOC));
+            ?>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+                <?php
+                // Display data in table rows
+                foreach ($combinedResults as $row) {
+                echo "<tr>";
+                    echo "<td>" . $row['name'] . "</td>";
+                    echo "<td>" . $row['email'] . "</td>";
+                    echo "</tr>";
+                }
+                ?>
+            </table>
+           
+            <?php
+            $conn->close();
+            ?>
             <button class="admin-button" type="button" onclick="window.location.href='home.php'">Back</button>
-		</div>
+        </div>
     </div>
 </body>
+
 </html>
